@@ -1,0 +1,8 @@
+/services/**/node_modules/
+/services/**/lib/
+/services/**/log/
+/services/**/yarn-lock
+/services/**/yarn-error.log
+/services/**/npm-debug.log
+/services/**/data/
+

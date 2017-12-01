@@ -1,0 +1,124 @@
+version : '3.3'
+
+services:
+  sample:
+    build:
+      context: ./sample
+      dockerfile: Dockerfile
+    command: npm start
+      # restart: always
+      # Mount volumes to allow code changes without rebuilding container image
+    volumes:
+      - ./sample/src:/app/dev/src
+      - ./sample/.env:/app/dev/.env
+      - ./sample/gulpfile.babel.js:/app/dev/gulpfile.babel.js
+      - ./sample/logs:/app/dev/logs
+    # Expose ports [Host:Container]
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+      - "8081:8081"
+    # Set environment variables from .env
+    env_file:
+      - ./sample/.env
+    # Override any env vars defined in .env
+    # environment:
+        #  - EXTERNAL_PORT=4001
+    hostname: sample
+    networks:
+      default:
+        aliases:
+          - sample.example.com                          
+  nginx:
+   image: nginx:latest
+   container_name: "nginx_proxy"
+   restart: always
+   volumes:
+     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+     - ./nginx/conf.d/:/etc/nginx/conf.d
+     - ./nginx/includes:/etc/nginx/includes
+     - ./nginx/certs:/etc/nginx/https 
+     - ./nginx/log:/var/log/nginx
+     - ./nginx/www/html:/var/www/html
+   ports:
+     - "80:80"
+     - "443:443"
+  adminer:
+    image: adminer:latest
+    container_name: "adminer"
+    ports:
+      - "8080:8080"
+  mysql:
+    image: mysql:latest
+    container_name: "mysql_server"
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+  postgres:
+    image: postgres:latest
+    container_name: "postgres_server"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+  joomla:
+    image: joomla
+    restart: always
+    links:
+      - mysql:mysql
+    ports:
+      - "8080:80"
+    environment:
+      JOOMLA_DB_HOST: mysql_server
+      JOOMLA_DB_PASSWORD: example
+  mongo:
+    image: mongo:latest
+    container_name: "mongodb_server"
+    restart: always
+    command:
+      - '-f'
+      - '/etc/mongod.conf'
+    volumes:
+      - ./mongo/mongod.conf:/etc/mongod.conf
+      - dbdata:/data/db
+      - ./log:/var/log/mongodb
+    ports:
+      - "27017"
+  mongo-express:
+    image: mongo-express:latest
+    container_name: "mongo_express"
+    env_file: 
+      - ./mongo-express/.env
+    ports:
+      - "8081:8081"
+  redis:
+    image: redis:latest
+    container_name: "redis_cache"
+    restart: always
+    command: redis-server /etc/redis/redis.conf
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf
+      - ./redis/data:/data
+    ports:
+      - "6379"
+#  rabbitmq:
+#    image: rabbitmq:latest
+#    restart: always    
+#    ports:
+#      - "5672"
+#    networks:
+#      - intnet
+  # MQTT based on Rabbitmq
+  mqtt:
+    build:
+      context: ./mqtt
+      dockerfile: Dockerfile
+    # volumes:
+    #   - ./mqtt/data:data
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "1883:1883"
+                                              
+volumes:
+  dbdata:
+    driver: local
+

@@ -1,0 +1,91 @@
+{
+  "name": "servicetemplate",
+  "version": "1.0.0",
+  "description": "Service Template",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./lib",
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelgodley/devservices.git"
+  },
+  "keywords": [
+    "microservice",
+    "docker",
+    "node"
+  ],
+  "author": "Mike Godley",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/michaelgodley/devservices/issues"
+  },
+  "homepage": "https://github.com/michaelgodley/devservices#readme",
+  "babel": {
+    "presets": [
+      ["env", {
+        "targets": {
+          "node": "current"
+        }
+      }
+      ]
+    ]
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "plugins": [
+      "import"
+    ]
+  },
+  "devDependencies": {
+    "babel-polyfill": "latest",
+    "babel-preset-env": "latest",
+    "babel-register": "latest",
+    "del": "latest",
+    "eslint": "latest",
+    "eslint-config-airbnb": "latest",
+    "eslint-plugin-import": "latest",
+    "eslint-plugin-jsx-a11y": "latest",
+    "eslint-plugin-react": "latest",
+    "gulp": "latest",
+    "gulp-babel": "latest",
+    "gulp-eslint": "latest",
+    "gulp-nodemon": "latest"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.1",
+    "axios": "^0.16.2",
+    "bcryptjs": "^2.4.0",
+    "body-parser": "^1.15.2",
+    "bunyan": "^1.8.5",
+    "bunyan-request": "^1.2.0",
+    "compression": "^1.7.0",
+    "cookie-parser": "1.4.3",
+    "cors": "^2.8.3",
+    "csurf": "^1.8.3",
+    "dotenv": "^4.0.0",
+    "errorhandler": "^1.5.0",
+    "express": "^4.14.0",
+    "express-session": "^1.11.3",
+    "express-sslify": "~0.1.1",
+    "express-status-monitor": "^0.1.9",
+    "express-validator": "^3.2.0",
+    "helmet": "^3.6.1",
+    "joi": "^10.6.0",
+    "lusca": "^1.4.1",
+    "magic-globals": "^0.5.2",
+    "method-override": "^2.3.5",
+    "moment": "^2.10.6",
+    "mongoose": "^4.7.2",
+    "multer": "^1.3.0",
+    "passport": "0.3.2",
+    "redis": "^2.6.3",
+    "request": "^2.81.0",
+    "semver": "^5.0.3",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.3.7",
+    "ws": "*"
+  }  
+}
