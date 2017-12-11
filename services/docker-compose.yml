@@ -57,8 +57,12 @@ services:
     image: postgres:latest
     container_name: "postgres_server"
     restart: always
-    environment:
-      POSTGRES_PASSWORD: example
+    env_file: 
+      - ./postgres/.env
+    volumes:
+      - ./postgres/:/var/lib/postgres
+    ports:
+      - "5432:5432"
   joomla:
     image: joomla
     restart: always
@@ -99,13 +103,16 @@ services:
       - ./redis/data:/data
     ports:
       - "6379"
-#  rabbitmq:
-#    image: rabbitmq:latest
-#    restart: always    
-#    ports:
-#      - "5672"
-#    networks:
-#      - intnet
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always    
+    env_file: 
+      - ./rabbitmq/.env
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    #networks:
+      #- intnet
   # MQTT based on Rabbitmq
   mqtt:
     build:
@@ -113,11 +120,20 @@ services:
       dockerfile: Dockerfile
     # volumes:
     #   - ./mqtt/data:data
+    env_file: 
+      - ./rabbitmq/.env
     ports:
       - "15672:15672"
       - "5672:5672"
       - "1883:1883"
-                                              
+  fluentd:
+    image: fluent/fluentd:latest
+    restart: always
+    ports:
+      - "9880:9880"
+    volumes:
+      - ./fluentd/fluentd.conf:/fluentd/etc/fluentd.conf
+
 volumes:
   dbdata:
     driver: local
