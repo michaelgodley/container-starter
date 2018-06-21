@@ -25,6 +25,8 @@ services:
     # environment:
         #  - EXTERNAL_PORT=4001
     hostname: sample
+    links:
+      - mongo
     networks:
       default:
         aliases:
